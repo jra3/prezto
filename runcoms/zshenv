@@ -1,3 +1,8 @@
+# Local variables:
+# coding: utf-8
+# mode: sh
+# End:
+
 #
 # Defines environment variables.
 #
@@ -9,3 +14,5 @@
 if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
+
+. ~/.fbchef/environment

@@ -1,0 +1,28 @@
+
+function prompt_jallen_precmd {
+  git_info=$( _dotfiles_scm_info )
+  if [ $git_info ]; then
+      git_info="%F{yellow}${git_info}%f"
+  fi   
+}
+
+function prompt_jallen_setup {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+  prompt_opts=(cr percent subst)
+
+  # Load required functions.
+  autoload -Uz add-zsh-hook
+
+  # Add hook for calling git-info before each command.
+  add-zsh-hook precmd prompt_jallen_precmd
+
+  if [ $UID -eq 0 ]; then CARETCOLOR="red"; else CARETCOLOR="blue"; fi
+
+  local return_code="%(?..%F{red}%? ↵%f)"
+
+  PROMPT='%m %B%F{blue}::%b %f%F{green}%3~$git_info%{%B%F{$CARETCOLOR} »%f%b '
+  RPROMPT='${return_code}'
+}
+
+prompt_jallen_setup "$@"
