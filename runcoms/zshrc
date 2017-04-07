@@ -16,10 +16,13 @@ fi
 
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
+export PATH=~/bin:$PATH:$GOPATH/bin:$GOROOT/bin
 
 export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
+
+EDITOR="~/bin/e"
+VISUAL=$EDITOR
 
 alias g=git
 
