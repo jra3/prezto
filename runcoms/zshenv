@@ -15,4 +15,6 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
-. ~/.fbchef/environment
+if [ -f ~/.fbchef/environment ]; then
+  source ~/.fbchef/environment
+fi

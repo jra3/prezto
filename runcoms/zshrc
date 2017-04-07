@@ -8,7 +8,11 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Customize to your needs...
+# define LOCAL_ADMIN_SCRIPTS in /etc/zshenv
+local master_file="${LOCAL_ADMIN_SCRIPTS}/master.zshrc"
+if [ -f "$master_file" ]; then
+  source "$master_file"
+fi
 
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/go
@@ -19,7 +23,7 @@ export INPUTRC=~/.inputrc
 
 alias g=git
 
-local fb_prompt_file=/opt/facebook/share/scm-prompt
+local fb_prompt_file="${LOCAL_ADMIN_SCRIPTS}/scm-prompt"
 if [ -f "$fb_prompt_file" ]; then
   source "$fb_prompt_file"
 else
