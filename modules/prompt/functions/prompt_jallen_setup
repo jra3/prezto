@@ -21,7 +21,7 @@ function prompt_jallen_setup {
 
   local return_code="%(?..%F{red}%? ↵%f)"
 
-  PROMPT='%m %B%F{blue}::%b %f%F{green}%3~$git_info%{%B%F{$CARETCOLOR} »%f%b '
+  PROMPT='%m %B%F{blue}::%b %f%F{green}%3~$git_info%B%F{$CARETCOLOR} »%f%b '
   RPROMPT='${return_code}'
 }
 
