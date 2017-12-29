@@ -41,6 +41,9 @@ function efile {
     "$EMACS_PLUGIN_LAUNCHER" --eval "$cmd" | tr -d \"
 }
 
+# HACK! Maven for fblite
+export PATH=/opt/apache-maven-3.5.0/bin:$PATH
+
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/go
 export PATH=~/bin:$PATH:$GOPATH/bin:$GOROOT/bin
@@ -48,7 +51,7 @@ export PATH=~/bin:$PATH:$GOPATH/bin:$GOROOT/bin
 export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
 
-EDITOR="~/bin/e"
+EDITOR="emacs"
 VISUAL=$EDITOR
 
 alias g=git
@@ -59,3 +62,41 @@ if [ -f "$fb_prompt_file" ]; then
 else
   echo "couldn't find FB SCM prompt file ${fb_prompt_file}"
 fi
+
+# me
+###################################################
+
+export FBANDROID_DIR=/Users/jallen/fbsource/fbandroid
+alias quicklog_update=/Users/jallen/fbsource/fbandroid/scripts/quicklog/quicklog_update.sh
+alias qlu=quicklog_update
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/platform-tools
+
+PATH="/Users/jallen/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/Users/jallen/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/jallen/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/jallen/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/jallen/perl5"; export PERL_MM_OPT;
+
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/platform-tools
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/platform-tools
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/platform-tools
