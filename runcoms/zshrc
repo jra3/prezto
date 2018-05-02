@@ -15,90 +15,77 @@ if [ -f "$master_file" ]; then
   source "$master_file"
 fi
 
-if [[ -s "${ZDOTDIR:-$HOME}/.iterm2_shell_integration.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.iterm2_shell_integration.zsh"
-fi
+# my local hacky copy of local admin scripts for emacs hackery
+# export LOCAL_ADMIN_SCRIPTS_DEV="$HOME/opsfiles/chef/cookbooks/secure/fb_shellserver_base/files/default/emacs"
 
-export EMACS_PLUGIN_LAUNCHER="${ZDOTDIR:-$HOME}/.zprezto/modules/emacs/emacsclient.sh"
-alias emacs="$EMACS_PLUGIN_LAUNCHER"
-alias e=emacs
+# Number of current visible frames,
+# Emacs daemon always has a visible frame called F1
+visible_frames() {
+  emacsclient -a "" -e '(length (visible-frame-list))'
+}
 
-alias eeval="$EMACS_PLUGIN_LAUNCHER --eval"
-alias eframe='emacsclient --alternate-editor "" --create-frame'
+## Focus on the first non-daemon frame
+# without this, I'd open buffers in a non-visible frame and then not have the visited in my open one
+change_focus() {
+  emacsclient -n -e "(select-frame-set-input-focus (car (or (nthcdr 1 (visible-frame-list))))))" # > /dev/null
+}
 
-# Write to standard output the directory of the file
-# opened in the the current buffer
-function ecd {
-    local cmd="(let ((buf-name (buffer-file-name (window-buffer))))
-                     (if buf-name (file-name-directory buf-name)))"
+_emacsfun() {
+    frames="$(visible_frames)"
 
-    local dir="$($EMACS_PLUGIN_LAUNCHER --eval $cmd | tr -d \")"
-    if [ -n "$dir" ] ;then
-        echo "$dir"
-    else
-        echo "can not deduce current buffer filename." >/dev/stderr
-        return 1
+    if [ $frames -lt  "2" ]; then # need to create a frame
+        # works differently in X11 envs...
+        if [ $DISPLAY ]; then
+            # create a frame, but don't wait for it. It'll be X11
+            emacsclient --no-wait --create-frame "$@"
+        else
+            # create an emacs frame interactively
+            emacsclient --create-frame "$@"
+        fi
+    else # there is already a visible frame besides the daemon, so
+        change_focus
+        # supress error if no args passed
+        test  "$#" -ne "0" && emacsclient -n "$@"
     fi
 }
 
-function efile {
-    local cmd="(buffer-file-name (window-buffer))"
-    "$EMACS_PLUGIN_LAUNCHER" --eval "$cmd" | tr -d \"
+export WWW=/data/users/jallen/www-hg
+alias www="cd $WWW"
+alias e=_emacsfun
+alias emacs=_emacsfun
+alias eframe='emacsclient --alternate-editor "" --create-frame'
+# ripgrep > silver searcher, but my fingers disagree
+alias ag=rg
+
+hhs() {
+    hh_client --search $1 $WWW
 }
+
+# Open a Hack class in emacs
+ec() {
+    class=$1
+    if [[ $1 =~ '^xhp_.*' ]]; then
+        class=$( echo $1 | sed 's#^xhp_#:#' | sed 's#__#:#g' | sed 's#_#-#g' )
+    fi
+    cd $WWW && _emacsfun $( hh_client --search-class $class $WWW | cut -d\" -f2 | head -n 1 )
+}
+
+# Open an nt spec in emacs, given a style string
+es() {
+    style=$1
+    class=$( cd $WWW && $WWW/scripts/nt/ntss $style )
+    (cd $WWW && _emacsfun $( hh_client --search-class $class $WWW | cut -d\" -f2 | head -n 1 ))
+}
+
+# HACK for fblite janks
+export JAVA_TOOL_OPTIONS="-Djava.net.preferIPv6Addresses=true"
 
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/go
-export PATH=~/bin:$PATH:$GOPATH/bin:$GOROOT/bin
-export PATH="$HOME/.brew/bin:$HOME/.brew/sbin:$PATH"
+export PATH=~/bin:$PATH:~/local/bin:$GOPATH/bin:$GOROOT/bin
+
 export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
 
-export GOPATH="${HOME}/.go"
-export GOROOT="$(brew --prefix golang)/libexec"
-export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
-
-
-EDITOR="emacs"
-VISUAL=$EDITOR
-
-alias g=git
-alias fb="cd ~/fbsource/"
-alias fba="cd ~/fbsource/fbandroid/"
-
-# me
-###################################################
-
-export FBANDROID_DIR=/Users/jallen/fbsource/fbandroid
-alias quicklog_update=/Users/jallen/fbsource/fbandroid/scripts/quicklog/quicklog_update.sh
-alias qlu=quicklog_update
-
-# added by setup_fb4a.sh
-export ANDROID_SDK=/opt/android_sdk
-export ANDROID_NDK_REPOSITORY=/opt/android_ndk
-export ANDROID_HOME=${ANDROID_SDK}
-export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/platform-tools
-
-PATH="/Users/jallen/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/Users/jallen/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/Users/jallen/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/Users/jallen/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/jallen/perl5"; export PERL_MM_OPT;
-
-
-# added by setup_fb4a.sh
-export ANDROID_SDK=/opt/android_sdk
-export ANDROID_NDK_REPOSITORY=/opt/android_ndk
-export ANDROID_HOME=${ANDROID_SDK}
-export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/platform-tools
-
-# added by setup_fb4a.sh
-export ANDROID_SDK=/opt/android_sdk
-export ANDROID_NDK_REPOSITORY=/opt/android_ndk
-export ANDROID_HOME=${ANDROID_SDK}
-export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/platform-tools
-
-# added by setup_fb4a.sh
-export ANDROID_SDK=/opt/android_sdk
-export ANDROID_NDK_REPOSITORY=/opt/android_ndk
-export ANDROID_HOME=${ANDROID_SDK}
-export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/platform-tools
+EDITOR="emacsclient --tty"
+HGMERGE="emacsclient --tty"

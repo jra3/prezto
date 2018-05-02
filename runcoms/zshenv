@@ -18,3 +18,7 @@ fi
 if [ -f ~/.fbchef/environment ]; then
   source ~/.fbchef/environment
 fi
+
+FBCODE_DIR="$HOME"/fbsource/fbcode
+FBCODE_PLATFORM=gcc-5-glibc-2.23
+TP2="$FBCODE_DIR"/third-party-buck/"$FBCODE_PLATFORM"/build
