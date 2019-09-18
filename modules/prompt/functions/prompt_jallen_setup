@@ -5,7 +5,7 @@ fi
 function prompt_jallen_precmd {
   git_info=$( _scm_prompt )
   if [ $git_info ]; then
-      git_info="%F{yellow}${git_info}%f"
+    git_info="%F{yellow}${git_info}%f"
   fi
 }
 

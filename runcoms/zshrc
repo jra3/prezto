@@ -16,44 +16,58 @@ if [ -f "$master_file" ]; then
 fi
 
 # my local hacky copy of local admin scripts for emacs hackery
-# export LOCAL_ADMIN_SCRIPTS_DEV="$HOME/opsfiles/chef/cookbooks/secure/fb_shellserver_base/files/default/emacs"
+# export LOCAL_ADMIN_SCRIPTS_DEV="$HOME/fbsource/fbcode/autocomplete/emacs"
+
+export EMACS_SOCKET_NAME="sockettome"
+export EMACS_SOCKET_FILE="$HOME/tmp/$EMACS_SOCKET_NAME"
+export TMPDIR="$HOME/tmp"
+
+ensure_daemon() {
+    if [[ ! -a $EMACS_SOCKET_FILE ]]; then
+        TMPDIR="$HOME/tmp" /bin/emacs --daemon=$EMACS_SOCKET_NAME
+    fi
+}
 
 # Number of current visible frames,
 # Emacs daemon always has a visible frame called F1
 visible_frames() {
-  emacsclient -a "" -e '(length (visible-frame-list))'
+  emacsclient --socket-name=$EMACS_SOCKET_FILE -a "" -e '(length (visible-frame-list))'
 }
 
 ## Focus on the first non-daemon frame
 # without this, I'd open buffers in a non-visible frame and then not have the visited in my open one
 change_focus() {
-  emacsclient -n -e "(select-frame-set-input-focus (car (or (nthcdr 1 (visible-frame-list))))))" # > /dev/null
+  emacsclient --socket-name=$EMACS_SOCKET_FILE -n -e "(select-frame-set-input-focus (car (or (nthcdr 1 (visible-frame-list))))))" # > /dev/null
 }
 
 _emacsfun() {
+    ensure_daemon
+
     frames="$(visible_frames)"
 
     if [ $frames -lt  "2" ]; then # need to create a frame
         # works differently in X11 envs...
         if [ $DISPLAY ]; then
             # create a frame, but don't wait for it. It'll be X11
-            emacsclient --no-wait --create-frame "$@"
+            emacsclient --socket-name=$EMACS_SOCKET_FILE --no-wait --create-frame "$@"
         else
             # create an emacs frame interactively
-            emacsclient --create-frame "$@"
+            emacsclient --socket-name=$EMACS_SOCKET_FILE --create-frame "$@"
         fi
     else # there is already a visible frame besides the daemon, so
         change_focus
         # supress error if no args passed
-        test  "$#" -ne "0" && emacsclient -n "$@"
+        test "$#" -ne "0" && emacsclient --socket-name=$EMACS_SOCKET_FILE -n "$@"
     fi
 }
 
 export WWW=/data/users/jallen/www-hg
+alias g=git
 alias www="cd $WWW"
+alias fb="cd $FBCODE_DIR"
 alias e=_emacsfun
 alias emacs=_emacsfun
-alias eframe='emacsclient --alternate-editor "" --create-frame'
+
 # ripgrep > silver searcher, but my fingers disagree
 alias ag=rg
 
@@ -80,12 +94,10 @@ es() {
 # HACK for fblite janks
 export JAVA_TOOL_OPTIONS="-Djava.net.preferIPv6Addresses=true"
 
-export GOROOT=/usr/local/opt/go/libexec
-export GOPATH=$HOME/go
-export PATH=~/bin:$PATH:~/local/bin:$GOPATH/bin:$GOROOT/bin
+export PATH=~/bin:~/.cask/bin:$PATH:~/local/bin:$GOPATH/bin:$GOROOT/bin
 
 export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
 
-EDITOR="emacsclient --tty"
-HGMERGE="emacsclient --tty"
+EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
+HGMERGE="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"

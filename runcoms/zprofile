@@ -10,6 +10,9 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
+# Concrete bung hole where dreams are made up, there's nothing you can do
+export TZ="America/New_York"
+
 #
 # Browser
 #
