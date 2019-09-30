@@ -1,7 +1,4 @@
-# Local variables:
-# coding: utf-8
-# mode: sh
-# End:
+## -*- coding: utf-8;mode: sh; -*- ##
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
@@ -12,6 +9,10 @@ fi
 local master_file="${LOCAL_ADMIN_SCRIPTS}/master.zshrc"
 if [ -f "$master_file" ]; then
   source "$master_file"
+fi
+
+if [[ -s "${ZDOTDIR:-$HOME}/.iterm2_shell_integration.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.iterm2_shell_integration.zsh"
 fi
 
 export EMACS_PLUGIN_LAUNCHER="${ZDOTDIR:-$HOME}/.zprezto/modules/emacs/emacsclient.sh"
@@ -47,7 +48,7 @@ export PATH=/opt/apache-maven-3.5.0/bin:$PATH
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/go
 export PATH=~/bin:$PATH:$GOPATH/bin:$GOROOT/bin
-
+export PATH="$HOME/.brew/bin:$HOME/.brew/sbin:$PATH"
 export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
 
@@ -55,6 +56,8 @@ EDITOR="emacs"
 VISUAL=$EDITOR
 
 alias g=git
+alias fb="cd ~/fbsource/"
+alias fba="cd ~/fbsource/fbandroid/"
 
 local fb_prompt_file="${LOCAL_ADMIN_SCRIPTS}/scm-prompt"
 if [ -f "$fb_prompt_file" ]; then
