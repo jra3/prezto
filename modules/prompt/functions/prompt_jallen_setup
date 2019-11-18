@@ -1,6 +1,9 @@
+if [ -f /opt/facebook/share/scm-prompt ]; then
+    source /opt/facebook/share/scm-prompt;
+fi
 
 function prompt_jallen_precmd {
-  git_info=$( _dotfiles_scm_info )
+  git_info=$( _scm_prompt )
   if [ $git_info ]; then
       git_info="%F{yellow}${git_info}%f"
   fi   
