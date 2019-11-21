@@ -8,13 +8,7 @@ _emacsfun()
 	# puth this file on the existing frame
 	emacsclient -a '' --no-wait "$@"
     else
-	if [ $DISPLAY ]; then
-	    # create a frame, but don't wait for it. It'll be X11
-	    emacsclient -a '' --no-wait --create-frame "$@"
-	else
-	    # create an emacs frame interactively
-	    emacsclient -a '' --create-frame "$@"
-	fi
+	emacsclient -a emacs --no-wait --create-frame "$@"
     fi
 }
 
