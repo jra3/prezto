@@ -40,7 +40,8 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'git' \
   'prompt' \
-  'tmux'
+  'tmux' \
+  'emacs'
 
 #
 # Autosuggestions
