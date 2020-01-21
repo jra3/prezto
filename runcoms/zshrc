@@ -63,13 +63,6 @@ alias g=git
 alias fb="cd ~/fbsource/"
 alias fba="cd ~/fbsource/fbandroid/"
 
-local fb_prompt_file="${LOCAL_ADMIN_SCRIPTS}/scm-prompt"
-if [ -f "$fb_prompt_file" ]; then
-  source "$fb_prompt_file"
-else
-  echo "couldn't find FB SCM prompt file ${fb_prompt_file}"
-fi
-
 # me
 ###################################################
 
