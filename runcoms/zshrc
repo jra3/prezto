@@ -46,15 +46,17 @@ function efile {
     "$EMACS_PLUGIN_LAUNCHER" --eval "$cmd" | tr -d \"
 }
 
-# HACK! Maven for fblite
-export PATH=/opt/apache-maven-3.5.0/bin:$PATH
-
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/go
 export PATH=~/bin:$PATH:$GOPATH/bin:$GOROOT/bin
 export PATH="$HOME/.brew/bin:$HOME/.brew/sbin:$PATH"
 export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
+
+export GOPATH="${HOME}/.go"
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+
 
 EDITOR="emacs"
 VISUAL=$EDITOR
