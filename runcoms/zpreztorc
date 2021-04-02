@@ -41,7 +41,10 @@ zstyle ':prezto:load' pmodule \
   'git' \
   'prompt' \
   'tmux' \
-  'emacs'
+  'emacs' \
+  'dnf'
+
+zstyle ':prezto:module:syntax-highlighting' color 'yes'
 
 #
 # Autosuggestions

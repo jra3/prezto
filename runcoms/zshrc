@@ -18,9 +18,12 @@ fi
 # my local hacky copy of local admin scripts for emacs hackery
 # export LOCAL_ADMIN_SCRIPTS_DEV="$HOME/fbsource/fbcode/autocomplete/emacs"
 
-export EMACS_SOCKET_NAME="sockettome"
-export EMACS_SOCKET_FILE="$HOME/tmp/$EMACS_SOCKET_NAME"
-export TMPDIR="$HOME/tmp"
+EMACS_DIR=~/.dot-emacs
+EMACS_SOCKET_NAME="sockettome"
+EMACS_SOCKET_FILE="$HOME/tmp/$EMACS_SOCKET_NAME"
+
+EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
+HGMERGE="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
 
 ensure_daemon() {
     if [[ ! -a $EMACS_SOCKET_FILE ]]; then
@@ -61,15 +64,25 @@ _emacsfun() {
     fi
 }
 
+
 export WWW=/data/users/jallen/www-hg
+
+alias cp='cp --backup=numbered'
+alias ln='ln --backup=numbered'
+alias mv='mv -f --backup=numbered'
+
 alias g=git
 alias www="cd $WWW"
 alias fb="cd $FBCODE_DIR"
+alias cf="cd ~/configerator"
 alias e=_emacsfun
 alias emacs=_emacsfun
-
 # ripgrep > silver searcher, but my fingers disagree
 alias ag=rg
+
+bgs() { /usr/local/bin/bgs --forcedir=$( hg root ) $@ }
+bgr() { /usr/local/bin/bgr --forcedir=$( hg root ) $@ }
+bgf() { /usr/local/bin/bgf --forcedir=$( hg root ) $@ }
 
 hhs() {
     hh_client --search $1 $WWW
@@ -84,15 +97,6 @@ ec() {
     cd $WWW && _emacsfun $( hh_client --search-class $class $WWW | cut -d\" -f2 | head -n 1 )
 }
 
-# Open an nt spec in emacs, given a style string
-es() {
-    style=$1
-    class=$( cd $WWW && $WWW/scripts/nt/ntss $style )
-    (cd $WWW && _emacsfun $( hh_client --search-class $class $WWW | cut -d\" -f2 | head -n 1 ))
-}
-
-# HACK for fblite janks
-export JAVA_TOOL_OPTIONS="-Djava.net.preferIPv6Addresses=true"
 
 export PATH=~/bin:~/.cask/bin:$PATH:~/local/bin:$GOPATH/bin:$GOROOT/bin
 
@@ -101,3 +105,33 @@ export INPUTRC=~/.inputrc
 
 EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
 HGMERGE="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
+
+PROF() {(
+  tmp=/tmp/PROF.tmp
+  perf=/tmp/PROF.perf
+  buck_args=()
+  while [ "$1" != "--" -a "$1" != "" ]; do
+    buck_args+=("$1")
+    shift
+  done
+  bin_args="$@"
+  unbuffer buck build --show-output "${buck_args[@]}" | tee $tmp
+  [ "${PIPESTATUS[0]}" == "0" ] || return 1
+  bin=`pwd`/`cat $tmp | perl -e 'local $/; $_=<STDIN>; chomp; s/^.* //s; print'`
+  echo "Running: $bin $bin_args"
+  sudo perf record -g -o $perf --call-graph dwarf $bin $bin_args
+  sudo chmod a+r $perf
+  stackstoscuba --perf $perf --dead
+)}
+
+# Make the shell's builtin pwd default to -P
+set -o physical
+
+# Use bourne-shell-compatible word splitting.
+setopt SH_WORD_SPLIT
+
+# I don't particularly like the extended glob stuff...
+unsetopt EXTENDED_GLOB
+
+# Compatibility with bash's PROMPT_COMMAND
+precmd() { eval "$PROMPT_COMMAND" }

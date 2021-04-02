@@ -21,6 +21,26 @@ if [ -f ~/.fbchef/environment ]; then
   source ~/.fbchef/environment
 fi
 
+TMPDIR="$HOME/tmp"
+PATH=~/bin:~/.cask/bin:$PATH
+INPUTRC=~/.inputrc
+
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
+setopt INC_APPEND_HISTORY
+
+HISTFILE=~/.zsh-history
+HISTSIZE=130000
+SAVEHIST=130000
+
+
+WWW=/data/users/jallen/www
 FBCODE_DIR="$HOME"/fbsource/fbcode
 FBCODE_PLATFORM=gcc-5-glibc-2.23
 TP2="$FBCODE_DIR"/third-party-buck/"$FBCODE_PLATFORM"/build
+
+GIT_PROXY_SSL_CERT=$THRIFT_TLS_CL_CERT_PATH
+GIT_PROXY_SSL_KEY=$THRIFT_TLS_CL_KEY_PATH
+HTTPS_PROXY=https://fwdproxy:8082
