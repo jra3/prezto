@@ -21,6 +21,8 @@ if [ -f ~/.fbchef/environment ]; then
   source ~/.fbchef/environment
 fi
 
+ADD_ERRORCODE_TO_PROMPT=1
+
 TMPDIR="$HOME/tmp"
 PATH=~/bin:~/.cask/bin:$PATH
 INPUTRC=~/.inputrc
@@ -35,10 +37,9 @@ HISTFILE=~/.zsh-history
 HISTSIZE=130000
 SAVEHIST=130000
 
-
 WWW=/data/users/jallen/www
 FBCODE_DIR="$HOME"/fbsource/fbcode
-FBCODE_PLATFORM=gcc-5-glibc-2.23
+# FBCODE_PLATFORM=gcc-5-glibc-2.23
 TP2="$FBCODE_DIR"/third-party-buck/"$FBCODE_PLATFORM"/build
 
 GIT_PROXY_SSL_CERT=$THRIFT_TLS_CL_CERT_PATH

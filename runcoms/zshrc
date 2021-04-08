@@ -10,24 +10,21 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/.iterm2_shell_integration.zsh" ]]; 
 fi
 
 # define LOCAL_ADMIN_SCRIPTS in /etc/zshenv
-local master_file="${LOCAL_ADMIN_SCRIPTS}/master.zshrc"
+local master_file="/usr/facebook/ops/rc/master.zshrc"
 if [ -f "$master_file" ]; then
   source "$master_file"
 fi
 
-# my local hacky copy of local admin scripts for emacs hackery
-# export LOCAL_ADMIN_SCRIPTS_DEV="$HOME/fbsource/fbcode/autocomplete/emacs"
-
 EMACS_DIR=~/.dot-emacs
-EMACS_SOCKET_NAME="sockettome"
-EMACS_SOCKET_FILE="$HOME/tmp/$EMACS_SOCKET_NAME"
+EMACS_SOCKET_NAME="sockettome.$HOST"
+EMACS_SOCKET_FILE="/tmp/$EMACS_SOCKET_NAME"
 
 EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
 HGMERGE="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
 
 ensure_daemon() {
     if [[ ! -a $EMACS_SOCKET_FILE ]]; then
-        TMPDIR="$HOME/tmp" /bin/emacs --daemon=$EMACS_SOCKET_NAME
+        /bin/emacs --daemon=$EMACS_SOCKET_NAME
     fi
 }
 
