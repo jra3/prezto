@@ -1,6 +1,6 @@
 ## -*- coding: utf-8;mode: sh; -*- ##
 
-local master_file="$ADMIN_SCRIPTS/usr/facebook/ops/rc/master.zshrc"
+local master_file="/usr/facebook/ops/rc/master.zshrc"
 if [ -f "$master_file" ]; then
   source "$master_file"
 fi
