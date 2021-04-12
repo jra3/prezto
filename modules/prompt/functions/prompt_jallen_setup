@@ -1,5 +1,9 @@
-if [ -f /opt/facebook/share/scm-prompt ]; then
-    source /opt/facebook/share/scm-prompt;
+if [ -f $ADMIN_SCRIPTS/scm-prompt ]; then
+  # devserver
+  source $ADMIN_SCRIPTS/scm-prompt;
+elif [ -f /opt/facebook/share/scm-prompt ]; then
+  # macbook
+  source /opt/facebook/share/scm-prompt
 fi
 
 function prompt_jallen_precmd {
