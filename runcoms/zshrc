@@ -56,6 +56,7 @@ _emacsfun() {
     fi
 }
 
+export PATH=~/bin:~/.cask/bin:~/.brew/bin:$PATH
 
 export WWW=/data/users/jallen/www-hg
 
@@ -81,22 +82,6 @@ alias ag=rg
 bgs() { /usr/local/bin/bgs --forcedir=$( hg root ) $@ }
 bgr() { /usr/local/bin/bgr --forcedir=$( hg root ) $@ }
 bgf() { /usr/local/bin/bgf --forcedir=$( hg root ) $@ }
-
-hhs() {
-    hh_client --search $1 $WWW
-}
-
-# Open a Hack class in emacs
-ec() {
-    class=$1
-    if [[ $1 =~ '^xhp_.*' ]]; then
-        class=$( echo $1 | sed 's#^xhp_#:#' | sed 's#__#:#g' | sed 's#_#-#g' )
-    fi
-    cd $WWW && _emacsfun $( hh_client --search-class $class $WWW | cut -d\" -f2 | head -n 1 )
-}
-
-
-export PATH=~/bin:~/.cask/bin:$PATH:~/local/bin:$GOPATH/bin:$GOROOT/bin
 
 export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
