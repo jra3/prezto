@@ -67,8 +67,14 @@ alias g=git
 alias www="cd $WWW"
 alias fb="cd $FBCODE_DIR"
 alias cf="cd ~/configerator"
-alias e=_emacsfun
-alias emacs=_emacsfun
+
+if [ $( uname ) = "Darwin" ]; then
+    alias e="open -a /Applications/Emacs.app "
+else
+    alias e=_emacsfun
+fi
+
+alias emacs=e
 # ripgrep > silver searcher, but my fingers disagree
 alias ag=rg
 
