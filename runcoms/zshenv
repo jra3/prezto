@@ -10,15 +10,9 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
-
-
 # Ensure that a non-login, non-interactive shell has a defined environment.
 if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
-fi
-
-if [ -f ~/.fbchef/environment ]; then
-  source ~/.fbchef/environment
 fi
 
 ADD_ERRORCODE_TO_PROMPT=1
@@ -36,12 +30,3 @@ setopt INC_APPEND_HISTORY
 HISTFILE=~/.zsh-history
 HISTSIZE=130000
 SAVEHIST=130000
-
-WWW=/data/users/jallen/www
-FBCODE_DIR="$HOME"/fbsource/fbcode
-# FBCODE_PLATFORM=gcc-5-glibc-2.23
-TP2="$FBCODE_DIR"/third-party-buck/"$FBCODE_PLATFORM"/build
-
-GIT_PROXY_SSL_CERT=$THRIFT_TLS_CL_CERT_PATH
-GIT_PROXY_SSL_KEY=$THRIFT_TLS_CL_KEY_PATH
-HTTPS_PROXY=https://fwdproxy:8082

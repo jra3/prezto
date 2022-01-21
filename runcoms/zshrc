@@ -14,98 +14,43 @@ EMACS_DIR=~/.dot-emacs
 EMACS_SOCKET_NAME="sockettome.$HOST"
 EMACS_SOCKET_FILE="/tmp/$EMACS_SOCKET_NAME"
 
-EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
-HGMERGE="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
 
-ensure_daemon() {
-    if [[ ! -a $EMACS_SOCKET_FILE ]]; then
-        /bin/emacs --daemon=$EMACS_SOCKET_NAME
-    fi
-}
-
-# Number of current visible frames,
-# Emacs daemon always has a visible frame called F1
-visible_frames() {
-  emacsclient --socket-name=$EMACS_SOCKET_FILE -a "" -e '(length (visible-frame-list))'
-}
-
-## Focus on the first non-daemon frame
-# without this, I'd open buffers in a non-visible frame and then not have the visited in my open one
-change_focus() {
-  emacsclient --socket-name=$EMACS_SOCKET_FILE -n -e "(select-frame-set-input-focus (car (or (nthcdr 1 (visible-frame-list))))))" # > /dev/null
-}
-
-_emacsfun() {
-    ensure_daemon
-
-    frames="$(visible_frames)"
-
-    if [ $frames -lt  "2" ]; then # need to create a frame
-        # works differently in X11 envs...
-        if [ $DISPLAY ]; then
-            # create a frame, but don't wait for it. It'll be X11
-            emacsclient --socket-name=$EMACS_SOCKET_FILE --no-wait --create-frame "$@"
-        else
-            # create an emacs frame interactively
-            emacsclient --socket-name=$EMACS_SOCKET_FILE --create-frame "$@"
-        fi
-    else # there is already a visible frame besides the daemon, so
-        change_focus
-        # supress error if no args passed
-        test "$#" -ne "0" && emacsclient --socket-name=$EMACS_SOCKET_FILE -n "$@"
-    fi
-}
-
-export PATH=~/bin:~/.cask/bin:~/.brew/bin:$PATH
-
-export WWW=/data/users/jallen/www-hg
-
-alias cp='cp --backup=numbered'
-alias ln='ln --backup=numbered'
-alias mv='mv -f --backup=numbered'
+export PATH=~/bin:~/.cask/bin:/opt/homebrew/bin:$PATH
 
 alias g=git
-alias www="cd $WWW"
-alias fb="cd $FBCODE_DIR"
-alias cf="cd ~/configerator"
 
-if [ $( uname ) = "Darwin" ]; then
-    alias e="open -a /Applications/Emacs.app "
-else
-    alias e=_emacsfun
-fi
+# if [ $( uname ) = "Darwin" ]; then
+#     alias e="open -a /Applications/Emacs.app "
+# else
+#     alias e=_emacsfun
+# fi
 
-alias emacs=e
+# alias emacs=e
 # ripgrep > silver searcher, but my fingers disagree
 alias ag=rg
 
-bgs() { /usr/local/bin/bgs --forcedir=$( hg root ) $@ }
-bgr() { /usr/local/bin/bgr --forcedir=$( hg root ) $@ }
-bgf() { /usr/local/bin/bgf --forcedir=$( hg root ) $@ }
+
+gff ()
+{
+    if [[ -z "$1" ]]; then
+        echo "usage: gff <branch to fast-forward to HEAD>" > /dev/stderr;
+        return 2;
+    fi;
+    git fetch . HEAD:“$1” && git checkout "$1"
+}
+
+gffm ()
+{
+    local ISH="${1:-HEAD}";
+    shift;
+    git fetch . "$ISH":$(git-main-branch) && git checkout $(git-main-branch)
+}
 
 export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
 
-EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
-HGMERGE="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
-
-PROF() {(
-  tmp=/tmp/PROF.tmp
-  perf=/tmp/PROF.perf
-  buck_args=()
-  while [ "$1" != "--" -a "$1" != "" ]; do
-    buck_args+=("$1")
-    shift
-  done
-  bin_args="$@"
-  unbuffer buck build --show-output "${buck_args[@]}" | tee $tmp
-  [ "${PIPESTATUS[0]}" == "0" ] || return 1
-  bin=`pwd`/`cat $tmp | perl -e 'local $/; $_=<STDIN>; chomp; s/^.* //s; print'`
-  echo "Running: $bin $bin_args"
-  sudo perf record -g -o $perf --call-graph dwarf $bin $bin_args
-  sudo chmod a+r $perf
-  stackstoscuba --perf $perf --dead
-)}
+# EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
+# HGMERGE="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
 
 # Make the shell's builtin pwd default to -P
 set -o physical
