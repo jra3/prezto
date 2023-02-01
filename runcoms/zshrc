@@ -63,3 +63,4 @@ unsetopt EXTENDED_GLOB
 
 # Compatibility with bash's PROMPT_COMMAND
 precmd() { eval "$PROMPT_COMMAND" }
+export PATH="/opt/homebrew/sbin:$PATH"

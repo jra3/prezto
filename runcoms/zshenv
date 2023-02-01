@@ -30,3 +30,9 @@ setopt INC_APPEND_HISTORY
 HISTFILE=~/.zsh-history
 HISTSIZE=130000
 SAVEHIST=130000
+
+alias assume="source assume"
+
+fpath=(/Users/jallen/.granted/zsh_autocomplete/assume/ $fpath)
+
+fpath=(/Users/jallen/.granted/zsh_autocomplete/granted/ $fpath)
