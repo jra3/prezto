@@ -14,7 +14,6 @@ EMACS_DIR=~/.dot-emacs
 EMACS_SOCKET_NAME="sockettome.$HOST"
 EMACS_SOCKET_FILE="/tmp/$EMACS_SOCKET_NAME"
 
-
 export PATH=~/bin:~/.cask/bin:/opt/homebrew/bin:$PATH
 
 alias g=git
@@ -25,10 +24,9 @@ alias g=git
 #     alias e=_emacsfun
 # fi
 
-# alias emacs=e
 # ripgrep > silver searcher, but my fingers disagree
+export RIPGREP_CONFIG_PATH=~/.ripgreprc
 alias ag=rg
-
 
 gff ()
 {
@@ -49,7 +47,7 @@ gffm ()
 export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
 
-# EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
+EDITOR="emacs -nw"
 # HGMERGE="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
 
 # Make the shell's builtin pwd default to -P
@@ -63,4 +61,11 @@ unsetopt EXTENDED_GLOB
 
 # Compatibility with bash's PROMPT_COMMAND
 precmd() { eval "$PROMPT_COMMAND" }
+
+export PNPM_HOME="/Users/jallen/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
 export PATH="/opt/homebrew/sbin:$PATH"
+
+alias pcl="pnpm run -w precommit-checklist"
+autoload bashcompinit && bashcompinit
+complete -C aws_completer aws
