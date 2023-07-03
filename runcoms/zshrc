@@ -18,6 +18,10 @@ export PATH=~/bin:~/.cask/bin:/opt/homebrew/bin:$PATH
 
 alias g=git
 
+assume () {
+  eval $( ~/braid/scripts/assume_role $1 )
+}
+
 # if [ $( uname ) = "Darwin" ]; then
 #     alias e="open -a /Applications/Emacs.app "
 # else
