@@ -32,6 +32,8 @@ assume () {
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 alias ag=rg
 
+alias pcl="pkill tsc; pnpm run -w precommit-checklist"
+
 gff ()
 {
     if [[ -z "$1" ]]; then
@@ -46,6 +48,11 @@ gffm ()
     local ISH="${1:-HEAD}";
     shift;
     git fetch . "$ISH":$(git-main-branch) && git checkout $(git-main-branch)
+}
+
+assume ()
+{
+  eval $( ~/braid/scripts/assume_role $1 )
 }
 
 export EMACS_DIR=~/.dot-emacs
@@ -69,7 +76,7 @@ precmd() { eval "$PROMPT_COMMAND" }
 export PNPM_HOME="/Users/jallen/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 export PATH="/opt/homebrew/sbin:$PATH"
+export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
 
-alias pcl="pnpm run -w precommit-checklist"
 autoload bashcompinit && bashcompinit
 complete -C aws_completer aws

@@ -22,7 +22,6 @@
 # Load dependencies.
 pmodload 'helper'
 
-
 function prompt_jallen_pwd {
   local pwd="${PWD/#$HOME/~}"
 
@@ -34,6 +33,9 @@ function prompt_jallen_pwd {
   fi
 }
 
+function prompt_jallen_aws {
+  _prompt_jallen_aws=$( ~/braid/scripts/prompt-aws-profile )
+}
 
 function prompt_jallen_git_info {
   if (( _prompt_jallen_precmd_async_pid > 0 )); then
@@ -72,6 +74,7 @@ function prompt_jallen_precmd {
 
   # Format PWD.
   prompt_jallen_pwd
+  prompt_jallen_aws
 
   # Define prompts.
   RPROMPT='${editor_info[overwrite]}%(?:: %F{1}⏎%f)${VIM:+" %B%F{6}V%f%b"}'
@@ -123,8 +126,11 @@ function prompt_jallen_setup {
   zstyle ':prezto:module:git:info:keys' format \
     'status' '$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u'
 
+  AWS_INFO=$( $HOME/braid/scripts/prompt-aws-profile )
+  echo $AWS_INFO;
   # Define prompts.
   PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}${AWS_PROFILE:+"%F{11}$( $HOME/braid/scripts/prompt-aws-profile )%f "}%F{4}${_prompt_jallen_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
+  # PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{11}${_prompt_jallen_aws}%F{4}${_prompt_jallen_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
   RPROMPT=''
   SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
 }
@@ -139,47 +145,3 @@ function prompt_jallen_preview {
 }
 
 prompt_jallen_setup "$@"
-
-
-
-# function prompt_jallen_setup {
-#   setopt LOCAL_OPTIONS
-#   unsetopt XTRACE KSH_ARRAYS
-#   prompt_opts=(cr percent subst)
-
-#   # Load required functions.
-#   autoload -Uz add-zsh-hook
-
-#   # Add hook for calling git-info before each command.
-#   add-zsh-hook precmd prompt_jallen_git_precmd
-
-#   # Set git-info parameters.
-#   zstyle ':prezto:module:git:info' verbose 'yes'
-#   zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
-#   zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✚%f%%b'
-#   zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⬆%f%%b'
-#   zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⬇%f%%b'
-#   zstyle ':prezto:module:git:info:branch' format ' %%B%F{2}%b%f%%b'
-#   zstyle ':prezto:module:git:info:commit' format ' %%B%F{3}%.7c%f%%b'
-#   zstyle ':prezto:module:git:info:deleted' format ' %%B%F{1}✖%f%%b'
-#   zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✱%f%%b'
-#   zstyle ':prezto:module:git:info:position' format ' %%B%F{13}%p%f%%b'
-#   zstyle ':prezto:module:git:info:renamed' format ' %%B%F{5}➜%f%%b'
-#   zstyle ':prezto:module:git:info:stashed' format ' %%B%F{6}✭%f%%b'
-#   zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{3}═%f%%b'
-#   zstyle ':prezto:module:git:info:untracked' format ' %%B%F{7}◼%f%%b'
-#   zstyle ':prezto:module:git:info:keys' format \
-#     'status' '$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u'
-
-#   # Add hook for calling amplify-info before each command.
-#   add-zsh-hook precmd prompt_amplify_precmd
-
-#   if [ $UID -eq 0 ]; then CARETCOLOR="red"; else CARETCOLOR="blue"; fi
-
-#   local return_code="%(?..%F{red}%? ↵%f)"
-
-#   PROMPT='%m %B%F{blue}::%b %f%F{green}%3~ %F{magenta}$amplify_info%B%F{$CARETCOLOR}»%f%b '
-#   RPROMPT='${return_code}'
-# }
-
-# prompt_jallen_setup "$@"
