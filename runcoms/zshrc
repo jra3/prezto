@@ -18,6 +18,8 @@ export PATH=~/bin:~/.cask/bin:/opt/homebrew/bin:$PATH
 
 alias g=git
 
+alias nogen='grep -v __generated__'
+
 assume () {
   eval $( ~/braid/scripts/assume_role $1 )
 }
