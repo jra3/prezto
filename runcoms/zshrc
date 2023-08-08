@@ -10,10 +10,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-EMACS_DIR=~/.dot-emacs
-EMACS_SOCKET_NAME="sockettome.$HOST"
-EMACS_SOCKET_FILE="/tmp/$EMACS_SOCKET_NAME"
-
 export PATH=~/bin:~/.cask/bin:/opt/homebrew/bin:$PATH
 
 alias g=git
@@ -57,11 +53,7 @@ assume ()
   eval $( ~/braid/scripts/assume_role $1 )
 }
 
-export EMACS_DIR=~/.dot-emacs
 export INPUTRC=~/.inputrc
-
-EDITOR="emacs -nw"
-# HGMERGE="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
 
 # Make the shell's builtin pwd default to -P
 set -o physical

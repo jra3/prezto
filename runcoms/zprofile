@@ -25,7 +25,11 @@ fi
 # Editors
 #
 
-export EDITOR='emacs'
+export EMACS_DIR=~/.dot-emacs
+export EMACS_SOCKET_NAME="sockettome"
+export EMACS_SOCKET_FILE="$HOME/tmp/$EMACS_SOCKET_NAME"
+
+export EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
 export PAGER='less'
 
 #
