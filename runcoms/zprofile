@@ -26,10 +26,11 @@ fi
 #
 
 export EMACS_DIR=~/.dot-emacs
-export EMACS_SOCKET_NAME="sockettome"
-export EMACS_SOCKET_FILE="$HOME/tmp/$EMACS_SOCKET_NAME"
 
-export EDITOR="emacsclient --socket-name=$EMACS_SOCKET_FILE --tty"
+# All of this is assuming use of the emacs-plus homebrew package on mac
+export ALTERNATE_EDITOR=""
+export EDITOR="emacs -nw -q"
+export VISUAL="emacs -nw -q"
 export PAGER='less'
 
 #

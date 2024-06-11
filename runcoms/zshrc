@@ -1,30 +1,11 @@
 ## -*- coding: utf-8;mode: sh; -*- ##
 
-local master_file="/usr/facebook/ops/rc/master.zshrc"
-if [ -f "$master_file" ]; then
-  source "$master_file"
-fi
-
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-export PATH=~/bin:~/.cask/bin:/opt/homebrew/bin:$PATH
-
 alias g=git
-
-alias nogen='grep -v __generated__'
-
-assume () {
-  eval $( ~/braid/scripts/assume_role $1 )
-}
-
-# if [ $( uname ) = "Darwin" ]; then
-#     alias e="open -a /Applications/Emacs.app "
-# else
-#     alias e=_emacsfun
-# fi
 
 # ripgrep > silver searcher, but my fingers disagree
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
@@ -32,8 +13,15 @@ alias ag=rg
 
 alias pcl="pkill tsc; pnpm run -w precommit-checklist"
 
-gff ()
-{
+ut() {
+  if [[ "$1" ]]; then
+    date -r "${1}" +"%Y-%m-%dT%H:%M:%SZ"
+  else
+    date +%s
+  fi
+}
+
+gff () {
     if [[ -z "$1" ]]; then
         echo "usage: gff <branch to fast-forward to HEAD>" > /dev/stderr;
         return 2;
@@ -41,19 +29,15 @@ gff ()
     git fetch . HEAD:“$1” && git checkout "$1"
 }
 
-gffm ()
-{
+gffm () {
     local ISH="${1:-HEAD}";
     shift;
     git fetch . "$ISH":$(git-main-branch) && git checkout $(git-main-branch)
 }
 
-assume ()
-{
+assume () {
   eval $( ~/braid/scripts/assume_role $1 )
 }
-
-export INPUTRC=~/.inputrc
 
 # Make the shell's builtin pwd default to -P
 set -o physical
@@ -65,12 +49,18 @@ setopt SH_WORD_SPLIT
 unsetopt EXTENDED_GLOB
 
 # Compatibility with bash's PROMPT_COMMAND
-precmd() { eval "$PROMPT_COMMAND" }
+precmd() {
+  eval "$PROMPT_COMMAND"
+}
 
 export PNPM_HOME="/Users/jallen/Library/pnpm"
+
 export PATH="$PNPM_HOME:$PATH"
+export PATH="~/bin:$PATH":
+export PATH="~/.cask/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/sbin:$PATH"
-export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 
 autoload bashcompinit && bashcompinit
 complete -C aws_completer aws
