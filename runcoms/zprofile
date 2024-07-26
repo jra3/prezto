@@ -55,7 +55,6 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  /Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin
   /usr/local/{bin,sbin}
   $path
 )
@@ -84,9 +83,3 @@ if [[ ! -d "$TMPDIR" ]]; then
 fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
-
-JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
-
-# cdk...
-
-JSII_SILENCE_WARNING_UNTESTED_NODE_VERSION=1

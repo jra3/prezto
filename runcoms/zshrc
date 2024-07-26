@@ -2,7 +2,7 @@
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+	source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 alias g=git
@@ -13,30 +13,32 @@ alias ag=rg
 
 alias pcl="pkill tsc; pnpm run -w precommit-checklist"
 
+alias bwssh="~/bin/bw_add_sshkeys.py"
+
 ut() {
-  if [[ "$1" ]]; then
-    date -r "${1}" +"%Y-%m-%dT%H:%M:%SZ"
-  else
-    date +%s
-  fi
+	if [[ "$1" ]]; then
+		date -r "${1}" +"%Y-%m-%dT%H:%M:%SZ"
+	else
+		date +%s
+	fi
 }
 
 gff () {
-    if [[ -z "$1" ]]; then
-        echo "usage: gff <branch to fast-forward to HEAD>" > /dev/stderr;
-        return 2;
-    fi;
-    git fetch . HEAD:“$1” && git checkout "$1"
+		if [[ -z "$1" ]]; then
+				echo "usage: gff <branch to fast-forward to HEAD>" > /dev/stderr;
+				return 2;
+		fi;
+		git fetch . HEAD:“$1” && git checkout "$1"
 }
 
 gffm () {
-    local ISH="${1:-HEAD}";
-    shift;
-    git fetch . "$ISH":$(git-main-branch) && git checkout $(git-main-branch)
+		local ISH="${1:-HEAD}";
+		shift;
+		git fetch . "$ISH":$(git-main-branch) && git checkout $(git-main-branch)
 }
 
 assume () {
-  eval $( ~/braid/scripts/assume_role $1 )
+	eval $( ~/braid/scripts/assume_role $1 )
 }
 
 # Make the shell's builtin pwd default to -P
@@ -50,14 +52,12 @@ unsetopt EXTENDED_GLOB
 
 # Compatibility with bash's PROMPT_COMMAND
 precmd() {
-  eval "$PROMPT_COMMAND"
+	eval "$PROMPT_COMMAND"
 }
 
-export PNPM_HOME="/Users/jallen/Library/pnpm"
-
-export PATH="$PNPM_HOME:$PATH"
-export PATH="~/bin:$PATH":
-export PATH="~/.cask/bin:$PATH"
+export PATH="$HOME/bin:$PATH":
+export PATH="$HOME/.local/bin:$PATH":
+export PATH="$HOME/.cask/bin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
