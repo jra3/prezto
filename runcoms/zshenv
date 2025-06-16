@@ -3,13 +3,6 @@
 # mode: sh
 # End:
 
-#
-# Defines environment variables.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
-
 # Ensure that a non-login, non-interactive shell has a defined environment.
 if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
@@ -36,3 +29,5 @@ export BRAID_UID_PRODUCTION="d71ea186-1bcd-4ce4-a37d-cc0e4637e58e"
 
 export NODE_NO_WARNINGS=1
 export JSII_SILENCE_WARNING_UNTESTED_NODE_VERSION=1
+
+. "$HOME/.cargo/env"

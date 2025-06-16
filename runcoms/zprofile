@@ -82,4 +82,6 @@ if [[ ! -d "$TMPDIR" ]]; then
   export TMPDIR="$(mktemp -d)"
 fi
 
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+
 TMPPREFIX="${TMPDIR%/}/zsh"
