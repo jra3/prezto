@@ -10,19 +10,19 @@ zstyle ':prezto:*:*' color 'yes'
 # Set the Prezto modules to load (browse modules).
 # The order matters.
 zstyle ':prezto:load' pmodule \
-  'environment' \
-  'terminal' \
-  'editor' \
-  'history' \
-  'directory' \
-  'spectrum' \
-  'utility' \
-  'completion' \
-  'history-substring-search' \
-  'git' \
-  'prompt' \
-  'ssh' \
-  'dnf' \
+	'environment' \
+	'terminal' \
+	'editor' \
+	'history' \
+	'directory' \
+	'spectrum' \
+	'utility' \
+	'completion' \
+	'history-substring-search' \
+	'git' \
+	'prompt' \
+	'ssh' \
+	'dnf' \
 
 # Set the key mapping style to 'emacs' or 'vi'.
 zstyle ':prezto:module:editor' key-bindings 'emacs'
@@ -64,7 +64,7 @@ zstyle ':prezto:module:editor' key-bindings 'emacs'
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-zstyle ':prezto:module:prompt' theme 'jallen'
+zstyle ':prezto:module:prompt' theme 'sorin'
 
 #
 # SSH
@@ -80,18 +80,18 @@ zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_github_rsa'
 # Set syntax highlighters.
 # By default, only the main highlighter is enabled.
 zstyle ':prezto:module:syntax-highlighting' highlighters \
-  'main' \
-  'brackets' \
-  'pattern' \
-  'line' \
-  'cursor' \
-  'root'
+	'main' \
+	'brackets' \
+	'pattern' \
+	'line' \
+	'cursor' \
+	'root'
 
 # Set syntax highlighting styles.
 zstyle ':prezto:module:syntax-highlighting' styles \
-  'builtin' 'bg=blue' \
-  'command' 'bg=blue' \
-  'function' 'bg=blue'
+	'builtin' 'bg=blue' \
+	'command' 'bg=blue' \
+	'function' 'bg=blue'
 
 #
 # Terminal
